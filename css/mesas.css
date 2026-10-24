@@ -1,0 +1,33 @@
+/* ============================================================
+   Estilos específicos da página de Mesas
+   ============================================================ */
+
+/* Não reservada: fundo branco e itálico */
+.badge.livre {
+  background: #ffffff;
+  font-style: italic;
+}
+
+/* Reservada: fundo cinza claro e negrito */
+.badge.reservada {
+  background: #eaeaea;
+  font-weight: bold;
+}
+
+/* O número da mesa fica bloqueado durante a edição da localização */
+input:disabled {
+  background: #f0f0f0;
+  color: #777777;
+  cursor: not-allowed;
+}
+
+
+/* Comandas por mesa */
+.item-mesa { display: block; }
+.comanda-mesa { border-top: 1px solid #ddd; margin-top: 14px; padding-top: 12px; }
+.comanda-mesa h4 { margin: 0 0 10px; }
+.form-comanda-mesa { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.form-comanda-mesa select { flex: 1; min-width: 180px; padding: 9px; }
+.itens-comanda { margin-top: 10px; }
+.linha-comanda { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #eee; }
+.mensagem-comanda.erro { color: #a32222; }

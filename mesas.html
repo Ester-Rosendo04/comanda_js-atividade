@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mesas | Sabor da Orla</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mesas.css">
+</head>
+<body>
+
+  <!-- Barra superior -->
+  <div class="topo">
+    <button type="button" title="Disponível em etapas futuras">Histórico</button>
+    <button type="button" title="Disponível em etapas futuras">User_Atendente</button>
+  </div>
+
+  <!-- Cabeçalho -->
+  <header class="cabecalho">
+    <h1><a href="index.html">Sabor da Orla</a></h1>
+    <span class="data" id="data-atual"></span>
+  </header>
+
+  <!-- Barra de seção -->
+  <div class="barra-secao">Mesas</div>
+
+  <!-- Conteúdo -->
+  <main class="conteudo">
+
+    <!-- Painel esquerdo: formulário -->
+    <section class="painel">
+      <h2 id="titulo-form">Adicionar Mesa +</h2>
+
+      <form id="form-mesa">
+        <div class="campo">
+          <label for="numero">Número</label>
+          <input type="number" id="numero" min="1" step="1" required>
+        </div>
+
+        <div class="campo">
+          <label for="localizacao">Localização</label>
+          <input type="text" id="localizacao" required>
+        </div>
+
+        <div class="campo">
+          <label for="reservada">Situação de reserva</label>
+          <select id="reservada">
+            <option value="false">Não reservada</option>
+            <option value="true">Reservada</option>
+          </select>
+        </div>
+
+        <div class="botoes">
+          <button type="submit" class="btn-primario" id="btn-salvar">Cadastrar</button>
+          <button type="button" class="btn-secundario" id="btn-cancelar" hidden>Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Painel direito: lista -->
+    <section class="painel">
+      <h2>Mesas Cadastradas</h2>
+      <div class="lista" id="lista-mesas"></div>
+    </section>
+
+  </main>
+
+  <script src="js/comum.js"></script>
+  <script src="js/modelos.js"></script>
+  <script src="js/mesas.js"></script>
+</body>
+</html>
