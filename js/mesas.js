@@ -27,50 +27,41 @@ const dinheiro = valor => Number(valor).toLocaleString('pt-BR', { style: 'curren
 
 function renderizar() {
   listaMesas.innerHTML = '';
-  if (!mesas.length) { const p = document.createElement('p'); p.className = 'vazio'; p.textContent = 'Nenhuma mesa cadastrada.'; listaMesas.append(p); return; }
-  [...mesas].sort((a,b) => a.numero-b.numero).forEach(mesa => {
-    const item = document.createElement('article'); item.className = 'item item-mesa';
-    const info = document.createElement('div'); info.className = 'item-info';
-    const titulo = document.createElement('h3'); titulo.textContent = 'Mesa ' + mesa.numero;
-    const local = document.createElement('p'); local.className = 'descricao'; local.textContent = mesa.localizacao;
-    info.append(titulo, local);
-    const acoes = document.createElement('div'); acoes.className = 'item-acoes';
-    const btnReserva = document.createElement('button'); btnReserva.type = 'button'; btnReserva.className = 'badge ' + (mesa.reservada ? 'reservada' : 'livre');
-    btnReserva.textContent = mesa.situacaoFormatada; btnReserva.addEventListener('click', () => { mesa.alternarReserva(); salvarMesas(); renderizar(); });
-    const btnEditar = document.createElement('button'); btnEditar.type = 'button'; btnEditar.className = 'btn-editar'; btnEditar.textContent = 'Alterar'; btnEditar.addEventListener('click', () => iniciarEdicao(mesa.id));
-    acoes.append(btnReserva, btnEditar); item.append(info, acoes);
-
-    const secaoComanda = document.createElement('section'); secaoComanda.className = 'comanda-mesa';
-    const tituloComanda = document.createElement('h4'); tituloComanda.textContent = 'Comanda da mesa'; secaoComanda.append(tituloComanda);
-    const formItem = document.createElement('form'); formItem.className = 'form-comanda-mesa';
-    const seletor = document.createElement('select'); seletor.setAttribute('aria-label', 'Produto para adicionar à comanda');
-    const placeholder = document.createElement('option'); placeholder.value = ''; placeholder.textContent = 'Selecione um produto disponível'; seletor.append(placeholder);
-    const produtos = carregarProdutosParaComanda();
-    produtos.filter(p => p.disponivel).forEach(p => { const opt = document.createElement('option'); opt.value = String(p.id); opt.textContent = `${p.nome} — ${dinheiro(p.preco)}`; seletor.append(opt); });
-    const adicionar = document.createElement('button'); adicionar.type = 'submit'; adicionar.textContent = 'Adicionar à comanda'; adicionar.className = 'btn-primario';
-    formItem.append(seletor, adicionar);
-    const mensagem = document.createElement('p'); mensagem.className = 'mensagem-comanda'; mensagem.setAttribute('aria-live', 'polite');
-    formItem.addEventListener('submit', evento => {
-      evento.preventDefault(); const idProduto = Number(seletor.value);
-      const produto = carregarProdutosParaComanda().find(p => p.id === idProduto);
-      if (!produto) { mensagem.textContent = 'Selecione um produto cadastrado.'; mensagem.className = 'mensagem-comanda erro'; return; }
-      try { mesa.adicionarProduto(produto); salvarMesas(); renderizar(); }
-      catch (erro) { mensagem.textContent = erro.message; mensagem.className = 'mensagem-comanda erro'; }
-    });
-    secaoComanda.append(formItem, mensagem);
-    const listaItens = document.createElement('div'); listaItens.className = 'itens-comanda';
-    if (!mesa.itens.length) { const vazio = document.createElement('p'); vazio.className = 'vazio'; vazio.textContent = 'Nenhum item na comanda.'; listaItens.append(vazio); }
-    mesa.itens.forEach((linha, indice) => {
-      const linhaDOM = document.createElement('div'); linhaDOM.className = 'linha-comanda';
-      const nome = document.createElement('span'); nome.textContent = `${linha.nome} — ${dinheiro(linha.preco)}`;
-      const remover = document.createElement('button'); remover.type = 'button'; remover.className = 'btn-secundario'; remover.textContent = 'Remover';
-      remover.addEventListener('click', () => { mesa.removerItem(indice); salvarMesas(); renderizar(); });
-      linhaDOM.append(nome, remover); listaItens.append(linhaDOM);
-    });
-    const total = document.createElement('p'); total.className = 'preco'; total.textContent = 'Total: ' + dinheiro(mesa.totalComanda);
-    secaoComanda.append(listaItens, total); item.append(secaoComanda); listaMesas.append(item);
+  if (!mesas.length) {
+    listaMesas.append(criarMensagemVazia('Nenhuma mesa cadastrada.'));
+    return;
+  }
+  [...mesas].sort((a, b) => a.numero - b.numero).forEach(mesa => {
+    listaMesas.append(criarComponenteMesa(mesa, carregarProdutosParaComanda(), {
+      onAlternarReserva(id) {
+        const alvo = mesas.find(m => m.id === id);
+        if (!alvo) return;
+        alvo.alternarReserva();
+        salvarMesas();
+        renderizar();
+      },
+      onEditar: iniciarEdicao,
+      onAdicionarProduto(idMesa, idProduto, informarErro) {
+        const alvo = mesas.find(m => m.id === idMesa);
+        const produto = carregarProdutosParaComanda().find(p => p.id === idProduto);
+        if (!alvo || !produto) { informarErro('Selecione um produto cadastrado.'); return; }
+        try {
+          alvo.adicionarProduto(produto);
+          salvarMesas();
+          renderizar();
+        } catch (erro) { informarErro(erro.message); }
+      },
+      onRemoverItem(idMesa, indice) {
+        const alvo = mesas.find(m => m.id === idMesa);
+        if (!alvo) return;
+        alvo.removerItem(indice);
+        salvarMesas();
+        renderizar();
+      }
+    }));
   });
 }
+
 function iniciarEdicao(id) {
   const mesa = mesas.find(m => m.id === id); if (!mesa) return;
   idEmEdicao = id; campoNumero.value = mesa.numero; campoNumero.disabled = true;
