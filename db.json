@@ -1,0 +1,76 @@
+{
+  "produtos": [
+    {
+      "id": "obAz-tzLmZs",
+      "nome": "Hamburguer",
+      "descricao": "Pão de hambúrguer, carne bovina moída, queijo cheddar, alface, tomate, cebola, bacon, presunto, maionese, ketchup, mostarda, picles, sal, pimenta-do-reino e manteiga.",
+      "preco": 20,
+      "disponivel": true
+    },
+    {
+      "id": "ZRMD_mTB1PI",
+      "nome": "Refrigerante Guaraná",
+      "descricao": "350ml",
+      "preco": 7,
+      "disponivel": false
+    },
+    {
+      "nome": "Café",
+      "descricao": "Com açúcar",
+      "preco": 9,
+      "disponivel": true,
+      "id": "woCwhBqkni8"
+    }
+  ],
+  "mesas": [
+    {
+      "id": "LoK7yD77cT4",
+      "numero": 1,
+      "localizacao": "Do lado da mesa 4",
+      "reservada": false,
+      "itens": [
+        {
+          "produtoId": "ZRMD_mTB1PI",
+          "nome": "Refrigerante",
+          "preco": 7
+        },
+        {
+          "produtoId": "obAz-tzLmZs",
+          "nome": "Hamburguer",
+          "preco": 20
+        }
+      ]
+    },
+    {
+      "id": "1uVzDsBepmw",
+      "numero": 2,
+      "localizacao": "No meio da lanchonete",
+      "reservada": false,
+      "itens": [
+        {
+          "produtoId": "obAz-tzLmZs",
+          "nome": "Hamburguer",
+          "preco": 20
+        },
+        {
+          "produtoId": "wYpVlrpG2Rk",
+          "nome": "Sobremesa",
+          "preco": 9
+        },
+        {
+          "produtoId": "ZRMD_mTB1PI",
+          "nome": "Refrigerante Coca-cola",
+          "preco": 7
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "localizacao": "Perto do balcão",
+      "reservada": false,
+      "itens": [],
+      "id": "Zzwa0gBKzm0"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

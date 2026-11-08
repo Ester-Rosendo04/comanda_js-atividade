@@ -1,0 +1,34 @@
+# Dependências
+node_modules/
+
+# Variáveis de ambiente
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Builds
+dist/
+build/
+
+# Cache
+.npm/
+.cache/
+.parcel-cache/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de editores
+.vscode/
+.idea/
+
+# Arquivos temporários
+*.tmp
+*.swp
