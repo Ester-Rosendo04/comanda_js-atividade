@@ -8,7 +8,10 @@ async function carregarMesas() {
 		const lista = await Promise.all(
 			dados.map(
 				async (m) => {
-					const itens = await listarProdutosMesa(m.id)
+                    const idsItens = await listarProdutosMesa(m.id)
+					const itens = await Promise.all(
+                        idsItens.map(async (p) => await obterProduto(p.id))
+                    )
 					return new Mesa(m.id, m.numero, m.localizacao, m.reservada, itens);
 				}
 			)
@@ -113,14 +116,13 @@ async function renderizar() {
 		});
 		secaoComanda.append(formItem, mensagem);
 		const listaItens = document.createElement('div'); listaItens.className = 'itens-comanda';
-		const itens = await listarProdutosMesa(mesa.id);
-		if (!itens.length) {
+		if (!mesa.itens.length) {
 			const vazio = document.createElement('p');
 			vazio.className = 'vazio';
 			vazio.textContent = 'Nenhum item na comanda.';
 			listaItens.append(vazio);
 		}
-		itens.forEach(async ({id}, indice) => {
+		mesa.itens.forEach(async ({id}, indice) => {
 			const linha = await obterProduto(id);
 			const linhaDOM = document.createElement('div'); linhaDOM.className = 'linha-comanda';
 			const nome = document.createElement('span'); nome.textContent = `${linha.nome} — ${dinheiro(linha.preco)}`;
@@ -138,7 +140,9 @@ async function renderizar() {
 }
 async function iniciarEdicao(id) {
 	const { numero, localizacao, reservada } = await obterMesa(id);
-	const itens = listarProdutosMesa(id);
+	const idsItens = await listarProdutosMesa(id);
+    const itens = idsItens.map(async (p) => await listarProdutosMesa(p.id));
+    console.log(itens)
 	idEmEdicao = id;
 	const mesa = new Mesa(id, numero, localizacao, reservada, itens)
 	campoNumero.value = mesa.numero;
