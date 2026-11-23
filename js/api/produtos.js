@@ -1,55 +1,76 @@
 import { requisitar } from "./http.js";
 
-const urlProdutos = "http://localhost:3000/produtos";
+const urlProdutos = "http://127.0.0.1:5000/produtos";
 
 export async function listarProdutos() {
-    return requisitar(urlProdutos);
+  const url = `${urlProdutos}/`;
+  return requisitar(url);
 }
 
 export async function obterProduto(id) {
-    const url = `${urlProdutos}/${id}`;
+  const url = `${urlProdutos}/${id}`;
 
-    return requisitar(url);
+  return requisitar(url);
 }
 
 export async function criarProduto(dados) {
-    return requisitar(urlProdutos, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    });
+	const url = `${urlProdutos}/`;
+
+  return requisitar(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+      body: JSON.stringify(dados)
+  });
 }
 
 export async function atualizarProduto(id, dados) {
-    const url = `${urlProdutos}/${id}`;
+  const url = `${urlProdutos}/${id}`;
 
-    return requisitar(url, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    });
+	delete dados.id;
+
+  return requisitar(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(dados)
+  });
 }
 
 export async function atualizarParcialmenteProduto(id, dados) {
-    const url = `${urlProdutos}/${id}`;
+  const url = `${urlProdutos}/${id}`;
 
-    return requisitar(url, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    });
+  return requisitar(url, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(dados)
+  });
 }
 
 export async function excluirProduto(id) {
-    const url = `${urlProdutos}/${id}`;
+  const url = `${urlProdutos}/${id}`;
 
-    return requisitar(url, {
-        method: "DELETE"
-    });
+  return requisitar(url, {
+    method: "DELETE"
+  });
+}
+
+export async function adicionarProdutoMesa(produto_id, mesa_id) {
+  const url = `${urlProdutos}/${produto_id}/mesas/${mesa_id}`;
+
+  return requisitar(url, {
+    method: "POST"
+  });
+}
+
+export async function removerProdutoMesa(produto_id, mesa_id) {
+  const url = `${urlProdutos}/${produto_id}/mesas/${mesa_id}`;
+
+  return requisitar(url, {
+  	method: "DELETE"
+	});
 }

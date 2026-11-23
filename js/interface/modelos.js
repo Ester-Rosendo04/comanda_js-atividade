@@ -15,13 +15,23 @@ class Produto {
     return this.disponivel;
   }
   get precoFormatado() { return this.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
-  toJSON() { return { id: this.id, nome: this.nome, descricao: this.descricao, preco: this.preco, disponivel: this.disponivel }; }
+  toJSON() {
+    return {
+      id: this.id,
+      nome: this.nome,
+      descricao: this.descricao,
+      preco: this.preco,
+      disponivel: this.disponivel 
+    };
+	}
 }
 class Mesa {
   constructor(id, numero, localizacao, reservada = false, itens = []) {
     this.id = id;
-    this.numero = Number(numero); this.localizacao = localizacao;
-    this.reservada = Boolean(reservada); this.itens = Array.isArray(itens) ? itens : [];
+    this.numero = Number(numero);
+    this.localizacao = localizacao;
+    this.reservada = Boolean(reservada);
+    this.itens = Array.isArray(itens) ? itens : [];
   }
   atualizarLocalizacao(valor) { this.localizacao = valor; }
   atualizarReserva(valor) { this.reservada = Boolean(valor); }
@@ -43,7 +53,6 @@ class Mesa {
       numero: this.numero,
       localizacao: this.localizacao,
       reservada: this.reservada,
-      itens: this.itens
     }; 
   }
 }

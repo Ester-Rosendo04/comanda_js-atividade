@@ -1,13 +1,17 @@
 export async function requisitar(url, opcoes = {}) {
-    const resposta = await fetch(url, opcoes);
+	const resposta = await fetch(url, opcoes);
+	
+  if(opcoes.method === "DELETE" && resposta.ok) {
+		return
+	}
 
-    if (!resposta.ok) {
-        throw new Error(`Erro HTTP: ${resposta.status}`);
-    }
+	const dados = await resposta.json();
 
-    if (resposta.status === 204) {
-        return null;
-    }
+	if (!resposta.ok) {
+		throw new Error(
+			`${dados.message} | Erro HTTP: ${resposta.status}`
+		);
+	}
 
-    return await resposta.json();
+	return dados.data;
 }
